@@ -1,6 +1,21 @@
 # подключаем библиотеку компьютерного зрения 
 import cv2
 
+# подключаем модуль для работы с аргументами при вызове
+import argparse
+
+# библиотека для вызова системных функций
+import os
+
+# подключаем парсер аргументов командной строки
+parser = argparse.ArgumentParser()
+# добавляем аргумент для работы с изображениями
+parser.add_argument('--image')
+# сохраняем аргументы в отдельную переменную
+args = parser.parse_args()
+# прописываем цвет по умолчанию
+color = (0, 255, 0)
+
 
 # функция определения лиц
 def highlightFace(net, frame, conf_threshold=0.7):
@@ -58,7 +73,9 @@ ageNet = cv2.dnn.readNet(ageModel, ageProto)
 faceNet = cv2.dnn.readNet(faceModel, faceProto)
 
 # получаем видео с камеры
-video = cv2.VideoCapture(0)
+#video = cv2.VideoCapture(0)
+# если был указан аргумент с картинкой — берём картинку как источник
+video = cv2.VideoCapture(args.image if args.image else 0)
 # пока не нажата любая клавиша — выполняем цикл
 while cv2.waitKey(1) < 0:
     # получаем очередной кадр с камеры
